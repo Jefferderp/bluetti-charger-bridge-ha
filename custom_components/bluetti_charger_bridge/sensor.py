@@ -207,13 +207,15 @@ class ChargerSensor(BridgeEntity, SensorEntity):
         self.entity_description, self._channel, self._control_key = description, channel, control_key
         suffix = f"_{channel}" if channel is not None else ""
         if control_key is not None:
+            # Never echo the upstream key: it is operator/device-supplied text.
+            # The hashed digest used for identity is also the display label.
             suffix = f"_{sha256(control_key.encode()).hexdigest()[:16]}"
         self._attr_unique_id = f"{self._digest}_{description.key}{suffix}"
         self._attr_translation_key = description.translation_key
         if channel is not None:
             self._attr_translation_placeholders = {"index": str(channel)}
         elif control_key is not None:
-            self._attr_translation_placeholders = {"key": control_key}
+            self._attr_translation_placeholders = {"key": suffix[1:9]}
         self._attr_native_unit_of_measurement = description.unit
         self._attr_device_class = description.device_class
         self._attr_entity_category = description.entity_category
