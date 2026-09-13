@@ -1,0 +1,55 @@
+{
+  "config": {
+    "step": {
+      "user": {"title": "BLUETTI Charger Bridge", "data": {"url": "Bridge URL", "token": "Access token"}},
+      "reauth_confirm": {"title": "Reauthenticate", "data": {"token": "Access token"}},
+      "reconfigure": {"title": "Reconfigure bridge", "data": {"url": "Bridge URL", "token": "Access token"}}
+    },
+    "error": {
+      "invalid_url": "Enter an HTTP or HTTPS URL without credentials.",
+      "invalid_auth": "Authentication failed.",
+      "cannot_connect": "Cannot connect to the bridge.",
+      "invalid_response": "The bridge returned an unsupported response.",
+      "unknown": "Unexpected error."
+    },
+    "abort": {
+      "already_configured": "This bridge is already configured.",
+      "reauth_successful": "Reauthentication successful.",
+      "reconfigure_successful": "Reconfiguration successful."
+    }
+  },
+  "options": {"step": {"init": {"data": {"poll_interval": "Polling interval (seconds)"}}}},
+  "entity": {
+    "sensor": {
+      "rssi_dbm": {"name": "Signal strength"},
+      "input_voltage_v": {"name": "Input voltage"},
+      "output_voltage_v": {"name": "Output voltage"},
+      "output_current_a": {"name": "Output current"},
+      "output_power_w": {"name": "Output power"},
+      "car_battery_soc_pct": {"name": "Battery state of charge"},
+      "input_energy_total": {"name": "Input energy raw counter"},
+      "output_energy_total": {"name": "Output energy raw counter"},
+      "battery_type_input": {"name": "Battery type code"},
+      "energy_flow_flags": {"name": "Energy flow flags"},
+      "pack_voltage_type": {"name": "Pack voltage type code"},
+      "working_mode": {"name": "Working mode code"},
+      "output_voltage_setpoint_v": {"name": "Output voltage setpoint"},
+      "raw_flags": {"name": "Configuration flags"},
+      "channel_mode": {"name": "Channel mode code {index}"},
+      "fault_word": {"name": "Fault word {index}"},
+      "control_value": {"name": "Control value {key}"},
+      "channel_current_raw": {"name": "Channel current raw"},
+      "channel_power_w": {"name": "Channel power"},
+      "channel_voltage_raw": {"name": "Channel voltage raw"}
+    },
+    "binary_sensor": {
+      "has_fault": {"name": "Fault"},
+      "charging_enabled": {"name": "Charging enabled"},
+      "adaptive_mode": {"name": "Adaptive mode"},
+      "factory_set": {"name": "Factory set"},
+      "silent_mode": {"name": "Silent mode"},
+      "fault_word": {"name": "Fault word"}
+    },
+    "select": {"charging_mode": {"name": "Charging mode"}}
+  }
+}

@@ -1,0 +1,19 @@
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+target-version = "py313"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[project]
+name = "bluetti-charger-bridge"
+version = "1.0.0"
+requires-python = ">=3.13"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest", "pytest-asyncio", "pytest-homeassistant-custom-component", "ruff"]
