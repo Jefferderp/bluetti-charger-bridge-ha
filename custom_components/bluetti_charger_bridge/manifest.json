@@ -1,7 +1,7 @@
 {
   "domain": "bluetti_charger_bridge",
   "name": "BLUETTI Charger Bridge",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "documentation": "https://github.com/Jefferderp/bluetti-charger-bridge-ha",
   "issue_tracker": "https://github.com/Jefferderp/bluetti-charger-bridge-ha/issues",
   "codeowners": ["@Jefferderp"],

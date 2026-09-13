@@ -8,6 +8,7 @@ from unittest.mock import AsyncMock, MagicMock
 
 import aiohttp
 import pytest
+from homeassistant.config_entries import SOURCE_USER
 from homeassistant.const import CONF_TOKEN, CONF_URL
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import AbortFlow
@@ -66,6 +67,15 @@ VALID = {
         }
     },
 }
+
+
+async def test_home_assistant_can_start_user_config_flow(hass: HomeAssistant, enable_custom_integrations) -> None:
+    """Exercise the same config-flow lookup used by Add Integration."""
+    result = await hass.config_entries.flow.async_init("bluetti_charger_bridge", context={"source": SOURCE_USER})
+
+    assert result["type"] == "form"
+    assert result["step_id"] == "user"
+    assert set(result["data_schema"].schema) == {CONF_URL, CONF_TOKEN}
 
 
 def make_response(status: int, payload: object = None) -> tuple[MagicMock, AsyncMock]:

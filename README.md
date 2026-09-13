@@ -1,15 +1,25 @@
 # BLUETTI Charger Bridge
 
 [![Open HACS and add this repository](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Jefferderp&repository=bluetti-charger-bridge-ha&category=integration)
-[![Open your Home Assistant instance and show the add integration dialog](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start?domain=bluetti_charger_bridge)
 
 A local-polling Home Assistant integration for the BLUETTI Charger Bridge API.
 
 ## Install
 
-**HACS:** use the first badge above, or add `https://github.com/Jefferderp/bluetti-charger-bridge-ha` as an **Integration** custom repository, install it, and restart Home Assistant.
+### HACS (recommended)
 
-**Manual:** copy `custom_components/bluetti_charger_bridge` into your Home Assistant `custom_components` directory and restart.
+1. Use the HACS badge above. The badge adds the custom repository; it does **not** install the integration.
+2. In HACS, open **BLUETTI Charger Bridge**, select **Download**, and choose the latest version.
+3. Restart Home Assistant. A browser refresh is not sufficient.
+4. Only after the restart, use this button:
+
+   [![Add BLUETTI Charger Bridge](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start?domain=bluetti_charger_bridge)
+
+If Home Assistant says the integration does not support UI configuration, the custom component has not been loaded yet. Confirm HACS shows it as downloaded, restart Home Assistant, and try the Add Integration button again.
+
+### Manual
+
+Copy `custom_components/bluetti_charger_bridge` into your Home Assistant `custom_components` directory and restart Home Assistant before opening the configuration flow.
 
 ## Configure
 
