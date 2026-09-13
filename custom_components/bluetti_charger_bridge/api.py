@@ -8,7 +8,7 @@ from urllib.parse import quote
 import aiohttp
 from yarl import URL
 
-from .const import DEFAULT_TIMEOUT
+from .const import DEFAULT_TIMEOUT, WRITE_TIMEOUT
 
 
 class BridgeError(Exception):
@@ -101,13 +101,15 @@ class BridgeClient:
     def _headers(self) -> dict[str, str]:
         return {"Authorization": f"Bearer {self._token}"}
 
-    async def _request_json(self, method: str, path: str, **kwargs: Any) -> dict[str, Any]:
+    async def _request_json(
+        self, method: str, path: str, *, timeout: int = DEFAULT_TIMEOUT, **kwargs: Any
+    ) -> dict[str, Any]:
         try:
             async with self._session.request(
                 method,
                 f"{self.base_url}{path}",
                 headers=self._headers,
-                timeout=aiohttp.ClientTimeout(total=DEFAULT_TIMEOUT),
+                timeout=aiohttp.ClientTimeout(total=timeout),
                 **kwargs,
             ) as response:
                 if response.status in (401, 403):
@@ -135,6 +137,7 @@ class BridgeClient:
         result = await self._request_json(
             "PUT",
             f"/api/v1/chargers/{quote(charger_id, safe='')}/charging-mode",
+            timeout=WRITE_TIMEOUT,
             json={"mode": mode},
         )
         expected_silent = mode == "silent"
@@ -154,6 +157,7 @@ class BridgeClient:
         result = await self._request_json(
             "PUT",
             f"/api/v1/chargers/{quote(charger_id, safe='')}/charging-enabled",
+            timeout=WRITE_TIMEOUT,
             json={"enabled": enabled},
         )
         after = result.get("after")
