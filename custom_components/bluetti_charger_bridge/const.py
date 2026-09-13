@@ -6,7 +6,7 @@ from datetime import timedelta
 
 DOMAIN = "bluetti_charger_bridge"
 NAME = "BLUETTI Charger Bridge"
-PLATFORMS = ["sensor", "binary_sensor", "select"]
+PLATFORMS = ["sensor", "binary_sensor", "select", "switch"]
 CONF_POLL_INTERVAL = "poll_interval"
 DEFAULT_POLL_INTERVAL = 60
 MIN_POLL_INTERVAL = 15

@@ -26,6 +26,7 @@ from custom_components.bluetti_charger_bridge.config_flow import ConfigFlow
 from custom_components.bluetti_charger_bridge.coordinator import BridgeCoordinator
 from custom_components.bluetti_charger_bridge.entity import charger_digest
 from custom_components.bluetti_charger_bridge.sensor import SENSOR_DESCRIPTIONS, _entities
+from custom_components.bluetti_charger_bridge.switch import ChargerCharging
 
 VALID = {
     "schema_version": 1,
@@ -202,6 +203,55 @@ async def test_client_encodes_write_and_validates_actual_verified_contract() -> 
     )
     assert session.request.call_args.args[1].endswith("alpha%2Fid/charging-mode")
     assert session.request.call_args.kwargs["json"] == {"mode": "silent"}
+
+
+async def test_client_sets_charging_and_validates_readback() -> None:
+    result = {
+        "requested_enabled": False,
+        "before": {"charging_enabled": True},
+        "after": {"charging_enabled": False},
+        "verified": True,
+    }
+    session, _ = make_response(200, result)
+
+    await BridgeClient(session, "https://example.invalid", "fake-test-token").async_set_charging_enabled(
+        "alpha/id", False
+    )
+
+    assert session.request.call_args.args[1].endswith("alpha%2Fid/charging-enabled")
+    assert session.request.call_args.kwargs["json"] == {"enabled": False}
+
+
+@pytest.mark.parametrize(
+    "response",
+    [
+        {"requested_enabled": True, "after": {"charging_enabled": True}, "verified": False},
+        {"requested_enabled": False, "after": {"charging_enabled": True}, "verified": True},
+        {"requested_enabled": "yes", "after": {"charging_enabled": True}, "verified": True},
+    ],
+)
+async def test_client_rejects_unverified_or_inconsistent_charging_write(response: dict[str, object]) -> None:
+    session, _ = make_response(200, response)
+    with pytest.raises(BridgePayloadError):
+        await BridgeClient(session, "https://example.invalid", "fake-test-token").async_set_charging_enabled(
+            "alpha", True
+        )
+
+
+@pytest.mark.parametrize(("method", "requested"), [("async_turn_on", True), ("async_turn_off", False)])
+async def test_charging_switch_calls_bridge_and_refreshes(method: str, requested: bool) -> None:
+    coordinator = MagicMock()
+    coordinator.data = deepcopy(VALID)
+    coordinator.client.async_set_charging_enabled = AsyncMock()
+    coordinator.async_request_refresh = AsyncMock()
+    entity = ChargerCharging(coordinator, "entry-one", "charger-alpha")
+
+    assert entity.is_on is True
+    await getattr(entity, method)()
+
+    coordinator.client.async_set_charging_enabled.assert_awaited_once_with("charger-alpha", requested)
+    coordinator.async_request_refresh.assert_awaited_once()
+    assert entity.unique_id.endswith("_charging_enabled_control")
 
 
 @pytest.mark.parametrize(

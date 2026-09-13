@@ -147,3 +147,21 @@ class BridgeClient:
         ):
             raise BridgePayloadError("write not verified")
         return result
+
+    async def async_set_charging_enabled(self, charger_id: str, enabled: bool) -> dict[str, Any]:
+        if not isinstance(enabled, bool):
+            raise ValueError("enabled must be a boolean")
+        result = await self._request_json(
+            "PUT",
+            f"/api/v1/chargers/{quote(charger_id, safe='')}/charging-enabled",
+            json={"enabled": enabled},
+        )
+        after = result.get("after")
+        if (
+            result.get("verified") is not True
+            or result.get("requested_enabled") is not enabled
+            or not isinstance(after, dict)
+            or after.get("charging_enabled") is not enabled
+        ):
+            raise BridgePayloadError("write not verified")
+        return result

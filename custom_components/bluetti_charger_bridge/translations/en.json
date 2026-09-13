@@ -50,6 +50,7 @@
       "silent_mode": {"name": "Silent mode"},
       "fault_word": {"name": "Fault word"}
     },
-    "select": {"charging_mode": {"name": "Charging mode"}}
+    "select": {"charging_mode": {"name": "Charging mode"}},
+    "switch": {"charging_enabled_control": {"name": "Charging"}}
   }
 }
