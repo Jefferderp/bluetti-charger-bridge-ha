@@ -33,6 +33,8 @@ Input and output energy totals are exposed only as diagnostic raw counters: the 
 
 Requires Home Assistant **2025.1.4+**. The bridge must implement `GET /api/v1/status` schema version 1, `PUT /api/v1/chargers/{id}/charging-mode`, and `PUT /api/v1/chargers/{id}/charging-enabled`. Authentication failures trigger Home Assistant reauthentication. Check bridge reachability from the Home Assistant host, token permissions, and status schema.
 
+Control operations have a separate 210-second timeout because a serialized Bluetooth bridge may need to wait for an active poll before discovery, connection, write, and verified readback. Status polling retains a 10-second timeout. If a control intermittently reports `transport failure` but changes later, update to the latest integration release and restart Home Assistant Core.
+
 ## License
 
 MIT. This project is independent and is not affiliated with BLUETTI.

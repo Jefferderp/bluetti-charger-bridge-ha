@@ -203,7 +203,7 @@ async def test_client_encodes_write_and_validates_actual_verified_contract() -> 
     )
     assert session.request.call_args.args[1].endswith("alpha%2Fid/charging-mode")
     assert session.request.call_args.kwargs["json"] == {"mode": "silent"}
-    assert session.request.call_args.kwargs["timeout"].total == 75
+    assert session.request.call_args.kwargs["timeout"].total == 210
 
 
 async def test_client_sets_charging_and_validates_readback() -> None:
@@ -221,7 +221,7 @@ async def test_client_sets_charging_and_validates_readback() -> None:
 
     assert session.request.call_args.args[1].endswith("alpha%2Fid/charging-enabled")
     assert session.request.call_args.kwargs["json"] == {"enabled": False}
-    assert session.request.call_args.kwargs["timeout"].total == 75
+    assert session.request.call_args.kwargs["timeout"].total == 210
 
 
 @pytest.mark.parametrize(
